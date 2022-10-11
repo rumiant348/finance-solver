@@ -6,7 +6,7 @@ kill_timeout = 5
 processes = []
 
 [build]
-  builder = "paketobuildpacks/builder:base"
+  builder = "paketobuildpacks/builder:tiny"
   buildpacks = ["gcr.io/paketo-buildpacks/go"]
 
 [env]
@@ -15,6 +15,7 @@ processes = []
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
+  private_network = true
 
 [[services]]
   http_checks = []

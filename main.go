@@ -27,7 +27,7 @@ func main() {
 	router.POST("/expenses", postExpenses)
 	router.GET("/expenses/:id", getExpensesById)
 
-	router.Run("localhost:8080")
+	router.Run(":8080")
 	defer db.Close()
 }
 
