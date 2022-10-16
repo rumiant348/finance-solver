@@ -12,6 +12,7 @@ import (
 func Connection() *sql.DB {
 	databaseUrl := os.Getenv("DATABASE_URL")
 	if databaseUrl == "" {
+		log.Print("Using local database")
 		databaseUrl = "postgres://localhost:5432/postgres"
 	}
 
