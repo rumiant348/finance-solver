@@ -12,17 +12,17 @@ import (
 	"github.com/rumiant348/finance-solver/repository"
 )
 
-var expenseRepository repository.ExpenseRepository 
+var expenseRepository repository.ExpenseRepository
 var db *sql.DB
 
-func init() {
-	db = database.Connection()
-	expenseRepository = repository.NewExpenseRepository(db)
-}
+// func init() {
+// 	db = database.Connection()
+// 	expenseRepository = repository.NewExpenseRepository(db)
+// }
 
 func main() {
 	router := gin.Default()
-	
+
 	router.GET("/expenses", getExpenses)
 	router.POST("/expenses", postExpenses)
 	router.GET("/expenses/:id", getExpensesById)
@@ -31,21 +31,26 @@ func main() {
 	defer db.Close()
 }
 
-
 func getExpenses(c *gin.Context) {
+	db = database.Connection()
+	expenseRepository = repository.NewExpenseRepository(db)
+	defer db.Close()
 
-	expenses, err := expenseRepository.GetExpenses();
+	expenses, err := expenseRepository.GetExpenses()
 	if err != nil {
 		log.Printf("Error while getting expenses: %v\n", err)
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Internal error"})
 		return
 	}
 
-
 	c.IndentedJSON(http.StatusOK, expenses)
 }
 
 func postExpenses(c *gin.Context) {
+	db = database.Connection()
+	expenseRepository = repository.NewExpenseRepository(db)
+	defer db.Close()
+
 	var newExpense models.Expense
 
 	if err := c.BindJSON(&newExpense); err != nil {
@@ -63,6 +68,10 @@ func postExpenses(c *gin.Context) {
 }
 
 func getExpensesById(c *gin.Context) {
+	db = database.Connection()
+	expenseRepository = repository.NewExpenseRepository(db)
+	defer db.Close()
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Id should be a integer "})
@@ -74,5 +83,5 @@ func getExpensesById(c *gin.Context) {
 		return
 	}
 	c.IndentedJSON(http.StatusOK, expense)
-	
+
 }
