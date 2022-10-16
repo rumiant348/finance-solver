@@ -8,3 +8,13 @@ pack build finance-solver:latest \
  --path . \
 && fly deploy --local-only --image finance-solver:latest
 ```
+
+
+*** Create table
+```
+CREATE TABLE expenses (  
+  id SERIAL PRIMARY KEY,
+  category TEXT NOT NULL,
+  price REAL
+)
+```

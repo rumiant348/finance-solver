@@ -39,7 +39,7 @@ func getExpenses(c *gin.Context) {
 	expenses, err := expenseRepository.GetExpenses()
 	if err != nil {
 		log.Printf("Error while getting expenses: %v\n", err)
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Internal error"})
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Internal error: " + err.Error()})
 		return
 	}
 
@@ -55,13 +55,13 @@ func postExpenses(c *gin.Context) {
 
 	c.Header("Access-Control-Allow-Origin", "*")
 	if err := c.BindJSON(&newExpense); err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, "Internal error")
+		c.IndentedJSON(http.StatusInternalServerError, "Internal error: "+err.Error())
 		return
 	}
 
 	newExpense, err := expenseRepository.CreateExpense(newExpense)
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, "Internal error")
+		c.IndentedJSON(http.StatusInternalServerError, "Internal error: "+err.Error())
 		return
 	}
 
