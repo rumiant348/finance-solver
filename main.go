@@ -36,6 +36,7 @@ func getExpenses(c *gin.Context) {
 	expenseRepository = repository.NewExpenseRepository(db)
 	defer db.Close()
 
+	c.Header("Access-Control-Allow-Origin", "*")
 	expenses, err := expenseRepository.GetExpenses()
 	if err != nil {
 		log.Printf("Error while getting expenses: %v\n", err)
@@ -53,6 +54,7 @@ func postExpenses(c *gin.Context) {
 
 	var newExpense models.Expense
 
+	c.Header("Access-Control-Allow-Origin", "*")
 	if err := c.BindJSON(&newExpense); err != nil {
 		c.IndentedJSON(http.StatusInternalServerError, "Internal error")
 		return
@@ -71,6 +73,8 @@ func getExpensesById(c *gin.Context) {
 	db = database.Connection()
 	expenseRepository = repository.NewExpenseRepository(db)
 	defer db.Close()
+
+	c.Header("Access-Control-Allow-Origin", "*")
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
