@@ -10,6 +10,7 @@ type ExpenseRepository interface {
 	GetExpenses() ([]models.Expense, error)
 	GetExpenseById(id string) (models.Expense, error)
 	CreateExpense(expense models.Expense) (models.Expense, error)
+	DeleteExpenseById(id string) (string, error)
 }
 
 type expenseRepository struct {
@@ -50,4 +51,10 @@ func (er expenseRepository) GetExpenseById(id string) (models.Expense, error) {
 	expense.ID = id
 	err := er.db.QueryRow("SELECT Amount, Description FROM expenses WHERE id=$1", id).Scan(&expense.Category, &expense.Price)
 	return expense, err
+}
+
+func (er expenseRepository) DeleteExpenseById(id string) (string, error) {
+	var foundId string
+	err := er.db.QueryRow("DELETE FROM expenses WHERE id=$1 RETURNING id", id).Scan(&foundId)
+	return foundId, err
 }

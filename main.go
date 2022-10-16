@@ -14,22 +14,6 @@ import (
 var expenseRepository repository.ExpenseRepository
 var db *sql.DB
 
-// func init() {
-// 	db = database.Connection()
-// 	expenseRepository = repository.NewExpenseRepository(db)
-// }
-
-func main() {
-	router := gin.Default()
-
-	router.GET("/expenses", getExpenses)
-	router.POST("/expenses", postExpenses)
-	router.GET("/expenses/:id", getExpensesById)
-
-	router.Run(":8080")
-	defer db.Close()
-}
-
 func getExpenses(c *gin.Context) {
 	db = database.Connection()
 	expenseRepository = repository.NewExpenseRepository(db)
@@ -68,6 +52,23 @@ func postExpenses(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newExpense)
 }
 
+func deleteExpenseById(c *gin.Context) {
+	db = database.Connection()
+	expenseRepository = repository.NewExpenseRepository(db)
+	defer db.Close()
+
+	c.Header("Access-Control-Allow-Origin", "*")
+
+	id, err := expenseRepository.DeleteExpenseById(c.Param("id"))
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + id + " not found"})
+		// c.IndentedJSON(http.StatusInternalServerError, "Internal error: "+err.Error())
+		return
+	}
+	// c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + id + " not found"})
+	c.IndentedJSON(http.StatusOK, "")
+}
+
 func getExpensesById(c *gin.Context) {
 	db = database.Connection()
 	expenseRepository = repository.NewExpenseRepository(db)
@@ -75,11 +76,6 @@ func getExpensesById(c *gin.Context) {
 
 	c.Header("Access-Control-Allow-Origin", "*")
 
-	// id, err := strconv.Atoi(c.Param("id"))
-	// if err != nil {
-	// 	c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Id should be a integer "})
-	// 	return
-	// }
 	expense, err := expenseRepository.GetExpenseById(c.Param("id"))
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + c.Param("id") + " not found"})
@@ -87,4 +83,16 @@ func getExpensesById(c *gin.Context) {
 	}
 	c.IndentedJSON(http.StatusOK, expense)
 
+}
+
+func main() {
+	router := gin.Default()
+
+	router.GET("/expenses", getExpenses)
+	router.POST("/expenses", postExpenses)
+	router.GET("/expenses/:id", getExpensesById)
+	router.DELETE("/expenses/:id", deleteExpenseById)
+
+	router.Run(":8080")
+	defer db.Close()
 }
