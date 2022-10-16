@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rumiant348/finance-solver/database"
@@ -76,14 +75,14 @@ func getExpensesById(c *gin.Context) {
 
 	c.Header("Access-Control-Allow-Origin", "*")
 
-	id, err := strconv.Atoi(c.Param("id"))
+	// id, err := strconv.Atoi(c.Param("id"))
+	// if err != nil {
+	// 	c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Id should be a integer "})
+	// 	return
+	// }
+	expense, err := expenseRepository.GetExpenseById(c.Param("id"))
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Id should be a integer "})
-		return
-	}
-	expense, err := expenseRepository.GetExpenseById(id)
-	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + strconv.Itoa(id) + " not found"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + c.Param("id") + " not found"})
 		return
 	}
 	c.IndentedJSON(http.StatusOK, expense)

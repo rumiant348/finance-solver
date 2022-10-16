@@ -7,31 +7,31 @@ import (
 )
 
 type ExpenseRepository interface {
-	GetExpenses() ([]models.Expense , error)
-    GetExpenseById(id int) (models.Expense, error)
-    CreateExpense(expense models.Expense) (models.Expense , error)
+	GetExpenses() ([]models.Expense, error)
+	GetExpenseById(id string) (models.Expense, error)
+	CreateExpense(expense models.Expense) (models.Expense, error)
 }
 
 type expenseRepository struct {
-    db *sql.DB
+	db *sql.DB
 }
 
 func NewExpenseRepository(db *sql.DB) ExpenseRepository {
-    return expenseRepository{db: db}
+	return expenseRepository{db: db}
 }
 
-func (er expenseRepository) GetExpenses() ([]models.Expense , error) {
+func (er expenseRepository) GetExpenses() ([]models.Expense, error) {
 
-	rows, err := er.db.Query("SELECT * FROM expense")
+	rows, err := er.db.Query("SELECT * FROM expenses")
 	if err != nil {
-        return nil, err
-    }
+		return nil, err
+	}
 	defer rows.Close()
-	
+
 	var expenses []models.Expense
 	for rows.Next() {
 		var exp models.Expense
-		if err := rows.Scan(&exp.ID, &exp.Amount, &exp.Description); err != nil {
+		if err := rows.Scan(&exp.ID, &exp.Category, &exp.Price); err != nil {
 			return expenses, err
 		}
 		expenses = append(expenses, exp)
@@ -40,14 +40,14 @@ func (er expenseRepository) GetExpenses() ([]models.Expense , error) {
 }
 
 func (er expenseRepository) CreateExpense(expense models.Expense) (models.Expense, error) {
-	err := er.db.QueryRow("INSERT INTO expense(amount, description) VALUES($1, $2)  RETURNING id", 
-	    expense.Amount, expense.Description).Scan(&expense.ID)
+	err := er.db.QueryRow("INSERT INTO expenses(category, price) VALUES($1, $2)  RETURNING id",
+		expense.Category, expense.Price).Scan(&expense.ID)
 	return expense, err
 }
 
-func (er expenseRepository) GetExpenseById(id int) (models.Expense, error) {
+func (er expenseRepository) GetExpenseById(id string) (models.Expense, error) {
 	var expense models.Expense
 	expense.ID = id
-	err := er.db.QueryRow("SELECT Amount, Description FROM expense WHERE id=$1", id).Scan(&expense.Amount, &expense.Description)
+	err := er.db.QueryRow("SELECT Amount, Description FROM expenses WHERE id=$1", id).Scan(&expense.Category, &expense.Price)
 	return expense, err
 }

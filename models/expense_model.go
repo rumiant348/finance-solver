@@ -1,7 +1,7 @@
 package models
 
 type Expense struct {
-	ID	int	`json:"id"`
-	Description	string	`json:"description"`
-	Amount	float64 `json:"amount"`
+	ID       string  `json:"id"`
+	Category string  `json:"category"`
+	Price    float64 `json:"price"`
 }
