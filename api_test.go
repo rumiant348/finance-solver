@@ -24,7 +24,7 @@ func TestGetAll(t *testing.T) {
 	var expenses []models.Expense
 	err = json.NewDecoder(resp.Body).Decode(&expenses)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatalf("Json unmarshalling failed: %+v\n", err)
 	}
 
 	fmt.Println(expenses)
@@ -44,7 +44,7 @@ func TestPost(t *testing.T) {
 
 	result, err := postExpense(u)
 	if err != nil {
-		t.Fatalf("error sending post: " + err.Error())
+		t.Fatalf("error sending post: %+v\n", err.Error())
 	}
 	fmt.Println(result)
 	assert.NotEqual(t, result.ID, 0)
@@ -60,17 +60,17 @@ func TestDelete(t *testing.T) {
 
 	ex, err := postExpense(u)
 	if err != nil {
-		t.Fatalf("failed to post: " + err.Error())
+		t.Fatalf("failed to post: %+v\n", err)
 	}
 	statusCode, err := deleteExpense(ex.ID)
 	if err != nil {
-		t.Fatalf("failed to delete: " + err.Error())
+		t.Fatalf("failed to delete: %+v\n", err)
 	}
 	assert.Equal(t, statusCode, 200)
 
 	statusCode, err = deleteExpense(ex.ID)
 	if err != nil {
-		t.Fatalf("failed to delete: " + err.Error())
+		t.Fatalf("failed to delete: %+v\n", err)
 	}
 	assert.Equal(t, statusCode, 404)
 

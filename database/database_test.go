@@ -2,23 +2,19 @@ package database
 
 import (
 	"fmt"
-	"os"
 	"testing"
+
+	"github.com/rumiant348/finance-solver/models"
 )
 
 func TestConnection(t *testing.T) {
 	db := Connection()
 	defer db.Close()
 
-	var expense struct {
-		id          int
-		description string
-		amount      float32
-	}
-	err := db.QueryRow("SELECT * FROM expense LIMIT 1").Scan(&expense.id, &expense.amount, &expense.description,)
+	var expense models.Expense
+	err := db.QueryRow("SELECT * FROM expenses LIMIT 1").Scan(&expense.ID, &expense.Category, &expense.Price)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
+		t.Fatalf("QueryRow failed: %v\n", err)
 	}
 
 	fmt.Printf("Got first record from expenses %+v\n", expense)
