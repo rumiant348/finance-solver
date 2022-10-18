@@ -85,6 +85,13 @@ func getExpensesById(c *gin.Context) {
 
 }
 
+func preflight(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
+	c.Header("Access-Control-Allow-Headers", "*")
+	c.Status(http.StatusNoContent)
+}
+
 func main() {
 	router := gin.Default()
 
@@ -92,6 +99,7 @@ func main() {
 	router.POST("/expenses", postExpenses)
 	router.GET("/expenses/:id", getExpensesById)
 	router.DELETE("/expenses/:id", deleteExpenseById)
+	router.OPTIONS("/expenses", preflight)
 
 	router.Run(":8080")
 	defer db.Close()
