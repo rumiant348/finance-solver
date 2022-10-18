@@ -59,9 +59,9 @@ func deleteExpenseById(c *gin.Context) {
 
 	c.Header("Access-Control-Allow-Origin", "*")
 
-	id, err := expenseRepository.DeleteExpenseById(c.Param("id"))
+	_, err := expenseRepository.DeleteExpenseById(c.Param("id"))
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + id + " not found"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + c.Param("id") + " not found"})
 		// c.IndentedJSON(http.StatusInternalServerError, "Internal error: "+err.Error())
 		return
 	}
