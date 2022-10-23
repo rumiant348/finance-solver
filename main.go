@@ -13,6 +13,7 @@ func main() {
 	router.GET("/expenses/:id", e.GetExpensesById)
 	router.DELETE("/expenses/:id", e.DeleteExpenseById)
 	router.OPTIONS("/expenses", e.Preflight)
+	router.OPTIONS("/expenses/:id", e.Preflight)
 
 	router.Run(":8080")
 }

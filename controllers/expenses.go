@@ -67,7 +67,7 @@ func (e *Expenses) DeleteExpenseById(c *gin.Context) {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "expense with id " + c.Param("id") + " not found"})
 		return
 	}
-	c.IndentedJSON(http.StatusOK, "")
+	c.IndentedJSON(http.StatusOK, gin.H{"id": c.Param("id")})
 }
 
 func (e *Expenses) GetExpensesById(c *gin.Context) {

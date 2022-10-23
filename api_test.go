@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"testing"
 
@@ -100,5 +101,15 @@ func deleteExpense(id string) (int, error) {
 		return 0, err
 	}
 	resp, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	defer resp.Body.Close()
+
+	b, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(b))
+
 	return resp.StatusCode, err
 }
