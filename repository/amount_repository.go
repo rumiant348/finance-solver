@@ -49,6 +49,9 @@ func (r amountRepository) GetAmounts() ([]models.Amount, error) {
 		}
 		amounts = append(amounts, a)
 	}
+	if amounts == nil {
+		amounts = []models.Amount{}
+	}
 	return amounts, nil
 }
 

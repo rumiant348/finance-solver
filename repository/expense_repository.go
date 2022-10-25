@@ -48,6 +48,9 @@ func (er expenseRepository) GetExpenses() ([]models.Expense, error) {
 		}
 		expenses = append(expenses, exp)
 	}
+	if expenses == nil {
+		expenses = []models.Expense{}
+	}
 	return expenses, nil
 }
 
