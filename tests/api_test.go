@@ -1,4 +1,4 @@
-package main
+package tests
 
 import (
 	"bytes"
@@ -12,11 +12,10 @@ import (
 	"github.com/rumiant348/finance-solver/models"
 )
 
-// var getUrl = "https://finance-solver-api-v2.fly.dev/expenses"
-var getUrl = "http://localhost:8080/expenses"
+var url = ServiceURL()
 
 func TestGetAll(t *testing.T) {
-	resp, err := http.Get(getUrl)
+	resp, err := http.Get(url)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -85,7 +84,7 @@ func postExpense(u userDTO) (models.Expense, error) {
 		return result, err
 	}
 
-	resp, err := http.Post(getUrl, "application/json", bytes.NewBuffer(m))
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(m))
 	if err != nil {
 		return result, err
 	}
@@ -96,7 +95,7 @@ func postExpense(u userDTO) (models.Expense, error) {
 }
 
 func deleteExpense(id string) (int, error) {
-	req, err := http.NewRequest("DELETE", getUrl+"/"+id, nil)
+	req, err := http.NewRequest("DELETE", url+"/"+id, nil)
 	if err != nil {
 		return 0, err
 	}

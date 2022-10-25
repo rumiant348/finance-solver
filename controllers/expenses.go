@@ -19,6 +19,10 @@ type Expenses struct {
 func NewExpenses() *Expenses {
 	db := database.Connection()
 	expenseRepository := repository.NewExpenseRepository(db)
+	err := expenseRepository.CreateTable()
+	if err != nil {
+		log.Fatal(err)
+	}
 	return &Expenses{
 		db:                db,
 		expenseRepository: expenseRepository,
@@ -26,7 +30,6 @@ func NewExpenses() *Expenses {
 }
 
 func (e *Expenses) GetExpenses(c *gin.Context) {
-	e.db.Ping()
 	c.Header("Access-Control-Allow-Origin", "*")
 	expenses, err := e.expenseRepository.GetExpenses()
 	if err != nil {
@@ -39,7 +42,6 @@ func (e *Expenses) GetExpenses(c *gin.Context) {
 }
 
 func (e *Expenses) PostExpenses(c *gin.Context) {
-	e.db.Ping()
 	c.Header("Access-Control-Allow-Origin", "*")
 
 	var newExpense models.Expense
@@ -59,7 +61,6 @@ func (e *Expenses) PostExpenses(c *gin.Context) {
 }
 
 func (e *Expenses) DeleteExpenseById(c *gin.Context) {
-	e.db.Ping()
 	c.Header("Access-Control-Allow-Origin", "*")
 
 	_, err := e.expenseRepository.DeleteExpenseById(c.Param("id"))
@@ -71,7 +72,6 @@ func (e *Expenses) DeleteExpenseById(c *gin.Context) {
 }
 
 func (e *Expenses) GetExpensesById(c *gin.Context) {
-	e.db.Ping()
 
 	c.Header("Access-Control-Allow-Origin", "*")
 
