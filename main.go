@@ -51,7 +51,7 @@ func main() {
 	r.HandleFunc("/signup", usersC.Create).Methods("POST")
 	r.HandleFunc("/login", usersC.Login).Methods("POST")
 	//r.HandleFunc("/logintest", usersC.LoginTest).Methods("GET")
-	r.HandleFunc("/logintest", requireUserMw.ApplyFn(usersC.LoginTest)).Methods("GET")
+	r.HandleFunc("/logintest", requireUserMw.ApplyFn(usersC.CheckLogin)).Methods("GET")
 
 	// List routes
 	//r.GET("/lists", e.GetExpenses)

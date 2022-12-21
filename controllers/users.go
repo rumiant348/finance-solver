@@ -145,16 +145,16 @@ func (u *Users) signIn(w http.ResponseWriter, user *models.User) error {
 	return nil
 }
 
-// LoginTest
+// CheckLogin
 //
-//	@Summary		LoginTest
-//	@Description	LoginTest is used to check if a user is logged in.
+//	@Summary		CheckLogin
+//	@Description	CheckLogin is used to check if a user is logged in.
 //	@Tags			users
 //	@Param			Cookie:	header	string			true	"cookie	with key 'remember_token'"
 //	@Ok		200	{object}	response.JsonResponse	"success"
 //	@Ok		401	{object}	response.JsonResponse	"error"
-//	@Router			/logintest [get]
-func (u *Users) LoginTest(w http.ResponseWriter, r *http.Request) {
+//	@Router			/checklogin [get]
+func (u *Users) CheckLogin(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
 	// unauthorized cases are handled by the middleware
 	j.Ok(w, "authorized", http.StatusOK)
