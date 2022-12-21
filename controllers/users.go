@@ -45,10 +45,17 @@ type AuthRequestBody struct {
 	Password string `json:"password"`
 }
 
-// Create is used to process the signup form when a user
-// tries to create a new user account.
+// Create
 //
-// POST /signup
+//	@Summary		Signup
+//	@Description	Create is used to process the signup form when a user
+//	@Description	tries to create a new user account.
+//	@Tags			users
+//	@Accept			json
+//	@Param			request	body	AuthRequestBody	true	"required object"
+//	@Produce		json
+//	@Success		201	{object}	response.JsonResponse	"created"
+//	@Router			/signup [POST]
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
 
@@ -79,10 +86,17 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	j.Success(w, "User created", http.StatusCreated)
 }
 
-// Login is used to process the login form when a user
-// tries to log in as an existing user (via email & pw)
+// Login
 //
-// POST /login
+//	@Summary		Login
+//	@Description	Login is used to process the login form when a user
+//	@Description	tries to log in as an existing user (via email & pw)
+//	@Tags			users
+//	@Accept			json
+//	@Param			request	body	AuthRequestBody	true	"required object"
+//	@Produce		json
+//	@Success		200	{object}	response.JsonResponse	"success"
+//	@Router			/login [POST]
 func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
 	var a AuthRequestBody

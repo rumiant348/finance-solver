@@ -58,6 +58,10 @@ type createResponse struct {
 	ID uint `json:"id"`
 }
 
+// Create is used to process the signup form when a user
+// tries to create a new user account.
+//
+// POST /create
 func (l *Lists) Create(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
 

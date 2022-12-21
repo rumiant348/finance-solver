@@ -3,15 +3,20 @@ package main
 import (
 	"finance-solver.com/config"
 	"finance-solver.com/controllers"
+	_ "finance-solver.com/docs"
 	"finance-solver.com/middleware"
 	"finance-solver.com/models"
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 	"os"
 )
 
+//	@title		Finance Solver Api 2
+//	@version	1.0
+//	@host		localhost:3000
 func main() {
 	cfg := config.GetConfig()
 
@@ -61,6 +66,9 @@ func main() {
 	//router.GET("/expenses/:id", e.GetExpensesById)
 	//router.POST("/expenses", e.PostExpenses)
 	//router.DELETE("/expenses/:id", e.DeleteExpenseById)
+
+	// Swagger
+	r.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 
 	fmt.Printf("Starting the server on :%d...\n", cfg.Port)
 	err = http.ListenAndServe(fmt.Sprintf(":%d", cfg.Port),
