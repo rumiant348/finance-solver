@@ -19,7 +19,7 @@ type JsonResponse struct {
 	Data       *[]interface{} `json:"data,omitempty"`
 }
 
-func (j *JsonResponse) Success(w http.ResponseWriter, message string, statusCode int) {
+func (j *JsonResponse) Ok(w http.ResponseWriter, message string, statusCode int) {
 	j.StatusCode = statusCode
 	j.Status = StatusOK
 	j.Message = message

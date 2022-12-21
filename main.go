@@ -14,9 +14,9 @@ import (
 	"os"
 )
 
-//	@title		Finance Solver Api 2
-//	@version	1.0
-//	@host		localhost:3000
+// @title		Finance Solver Api 2
+// @version	1.0
+// @host		localhost:3000
 func main() {
 	cfg := config.GetConfig()
 
@@ -50,7 +50,8 @@ func main() {
 	// User routes
 	r.HandleFunc("/signup", usersC.Create).Methods("POST")
 	r.HandleFunc("/login", usersC.Login).Methods("POST")
-	r.HandleFunc("/cookietest", usersC.CookieTest).Methods("GET")
+	//r.HandleFunc("/logintest", usersC.LoginTest).Methods("GET")
+	r.HandleFunc("/logintest", requireUserMw.ApplyFn(usersC.LoginTest)).Methods("GET")
 
 	// List routes
 	//r.GET("/lists", e.GetExpenses)

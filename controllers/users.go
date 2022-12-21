@@ -5,7 +5,6 @@ import (
 	"finance-solver.com/models"
 	"finance-solver.com/rand"
 	"finance-solver.com/response"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -54,7 +53,7 @@ type AuthRequestBody struct {
 //	@Accept			json
 //	@Param			request	body	AuthRequestBody	true	"required object"
 //	@Produce		json
-//	@Success		201	{object}	response.JsonResponse	"created"
+//	@Ok		201	{object}	response.JsonResponse	"created"
 //	@Router			/signup [POST]
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
@@ -83,7 +82,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	j.Success(w, "User created", http.StatusCreated)
+	j.Ok(w, "User created", http.StatusCreated)
 }
 
 // Login
@@ -95,7 +94,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Param			request	body	AuthRequestBody	true	"required object"
 //	@Produce		json
-//	@Success		200	{object}	response.JsonResponse	"success"
+//	@Ok		200	{object}	response.JsonResponse	"success"
 //	@Router			/login [POST]
 func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
@@ -125,7 +124,7 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	j.Success(w, "Authorization successful", http.StatusOK)
+	j.Ok(w, "Authorization successful", http.StatusOK)
 }
 
 func (u *Users) signIn(w http.ResponseWriter, user *models.User) error {
@@ -146,17 +145,17 @@ func (u *Users) signIn(w http.ResponseWriter, user *models.User) error {
 	return nil
 }
 
-// CookieTest is used to display cookies on the current user
-func (u *Users) CookieTest(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("remember_token")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	user, err := u.us.ByRemember(cookie.Value)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	fmt.Fprintln(w, user.Email, cookie.Value)
+// LoginTest
+//
+//	@Summary		LoginTest
+//	@Description	LoginTest is used to check if a user is logged in.
+//	@Tags			users
+//	@Param			Cookie:	header	string			true	"cookie	with key 'remember_token'"
+//	@Ok		200	{object}	response.JsonResponse	"success"
+//	@Ok		401	{object}	response.JsonResponse	"error"
+//	@Router			/logintest [get]
+func (u *Users) LoginTest(w http.ResponseWriter, r *http.Request) {
+	var j response.JsonResponse
+	// unauthorized cases are handled by the middleware
+	j.Ok(w, "authorized", http.StatusOK)
 }

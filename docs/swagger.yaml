@@ -1,0 +1,100 @@
+definitions:
+  controllers.AuthRequestBody:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  response.JsonResponse:
+    properties:
+      data:
+        items: {}
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  title: Finance Solver Api 2
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Login is used to process the login form when a user
+        tries to log in as an existing user (via email & pw)
+      parameters:
+      - description: required object
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.AuthRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/response.JsonResponse'
+      summary: Login
+      tags:
+      - users
+  /logintest:
+    get:
+      description: LoginTest is used to check if a user is logged in.
+      parameters:
+      - description: "cookie\twith key \\"
+        in: header
+        name: name
+        required: true
+        type: string
+      - description: required object
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.AuthRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/response.JsonResponse'
+      summary: LoginTest
+      tags:
+      - users
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Create is used to process the signup form when a user
+        tries to create a new user account.
+      parameters:
+      - description: required object
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.AuthRequestBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: created
+          schema:
+            $ref: '#/definitions/response.JsonResponse'
+      summary: Signup
+      tags:
+      - users
+swagger: "2.0"
