@@ -24,6 +24,29 @@ info:
   title: Finance Solver Api 2
   version: "1.0"
 paths:
+  /checklogin:
+    get:
+      description: CheckLogin is used to check if a user is logged in.
+      parameters:
+      - description: "cookie\twith key 'remember_token'"
+        in: header
+        name: Cookie
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/response.JsonResponse'
+        "401":
+          description: error
+          schema:
+            $ref: '#/definitions/response.JsonResponse'
+      summary: CheckLogin
+      tags:
+      - users
   /login:
     post:
       consumes:
@@ -46,31 +69,6 @@ paths:
           schema:
             $ref: '#/definitions/response.JsonResponse'
       summary: Login
-      tags:
-      - users
-  /logintest:
-    get:
-      description: LoginTest is used to check if a user is logged in.
-      parameters:
-      - description: "cookie\twith key \\"
-        in: header
-        name: name
-        required: true
-        type: string
-      - description: required object
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.AuthRequestBody'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/response.JsonResponse'
-      summary: LoginTest
       tags:
       - users
   /signup:

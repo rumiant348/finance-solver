@@ -53,7 +53,7 @@ type AuthRequestBody struct {
 //	@Accept			json
 //	@Param			request	body	AuthRequestBody	true	"required object"
 //	@Produce		json
-//	@Ok		201	{object}	response.JsonResponse	"created"
+//	@Success		201	{object}	response.JsonResponse	"created"
 //	@Router			/signup [POST]
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
@@ -94,7 +94,7 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Param			request	body	AuthRequestBody	true	"required object"
 //	@Produce		json
-//	@Ok		200	{object}	response.JsonResponse	"success"
+//	@Success		200	{object}	response.JsonResponse	"success"
 //	@Router			/login [POST]
 func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
@@ -150,12 +150,13 @@ func (u *Users) signIn(w http.ResponseWriter, user *models.User) error {
 //	@Summary		CheckLogin
 //	@Description	CheckLogin is used to check if a user is logged in.
 //	@Tags			users
-//	@Param			Cookie:	header	string			true	"cookie	with key 'remember_token'"
-//	@Ok		200	{object}	response.JsonResponse	"success"
-//	@Ok		401	{object}	response.JsonResponse	"error"
+//	@Param			Cookie	header	string	true	"cookie	with key 'remember_token'"
+//	@Produce		json
+//	@Success		200	{object}	response.JsonResponse	"success"
 //	@Router			/checklogin [get]
 func (u *Users) CheckLogin(w http.ResponseWriter, r *http.Request) {
 	var j response.JsonResponse
+	////	 @Failure		401 string		\{"status":"error","message":"this resource needs authorization"} Unauthorized
 	// unauthorized cases are handled by the middleware
 	j.Ok(w, "authorized", http.StatusOK)
 }

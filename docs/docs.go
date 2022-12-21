@@ -16,6 +16,41 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/checklogin": {
+            "get": {
+                "description": "CheckLogin is used to check if a user is logged in.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "CheckLogin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "cookie\twith key 'remember_token'",
+                        "name": "Cookie",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Login is used to process the login form when a user\ntries to log in as an existing user (via email \u0026 pw)",
@@ -30,44 +65,6 @@ const docTemplate = `{
                 ],
                 "summary": "Login",
                 "parameters": [
-                    {
-                        "description": "required object",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.AuthRequestBody"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/response.JsonResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/logintest": {
-            "get": {
-                "description": "LoginTest is used to check if a user is logged in.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "LoginTest",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cookie\twith key \\",
-                        "name": "name",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "required object",
                         "name": "request",
