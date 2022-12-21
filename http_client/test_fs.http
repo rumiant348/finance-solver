@@ -1,0 +1,71 @@
+
+
+### sign up
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+  "name": "Anton Rumiantsev",
+  "email": "rumiant348@ya.ru",
+  "password": "qwerty123"
+}
+
+### login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "rumiant348@ya.ru",
+  "password": "qwerty123"
+}
+
+### cookie test
+GET http://localhost:3000/cookietest
+
+
+#//{
+#//  "name": "Anton Rumiantsev",
+#//  "email": "rumiant348@ya.ru",
+#//  "password": "qwerty123"
+#//}
+#
+#//status: 200
+#// set cookie
+#{
+#  "status": "success",
+#  "data": {
+#    "message": "Пользователь создан"
+#  }
+#}
+#
+####
+#POST http://localhost:3000/login
+#Content-Type: application/json
+#
+#//status: 400\500
+#{
+#  "status": "error",
+#  "data": {
+#    "message": "Читабельная ошибка"
+#  }
+#}
+### sign up
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+  "name": "Anton Rumiantsev",
+  "email": "rumiant348@yandex.ru",
+  "password": "qwerty123"
+}
+
+####
+POST http://localhost:3000/lists
+Content-Type: application/json
+
+{
+  "title": "my list"
+}
+
+####
+GET http://localhost:3000/lists
